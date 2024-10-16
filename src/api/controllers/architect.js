@@ -17,7 +17,7 @@ const postArchitects = async (req, res, next) => {
 //Read
 const getArchitects = async (req, res, next) => {
   try {
-    const allArchitects = await Architect.find()
+    const allArchitects = await Architect.find().populate('building')
     return res.status(200).json(allArchitects)
   } catch (error) {
     return res
@@ -30,8 +30,10 @@ const getArchitects = async (req, res, next) => {
 const updateArchitects = async (req, res, next) => {
   try {
     const { id } = req.params
+    const oldArchitect = await Building.findById(id)
     const newArchitect = newArchitect(req.body)
     newArchitect._id = id
+    newArchitect.building = [...oldArchitect.building, ...req.body.building]
     const updatedArchitect = await Architect.findByIdAndDelete(id, newArchitect)
     return res.status(200).json(updatedArchitect)
   } catch (error) {

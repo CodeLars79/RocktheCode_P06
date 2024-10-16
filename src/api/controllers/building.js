@@ -9,7 +9,9 @@ const postBuildings = async (req, res, next) => {
     const buildingSaved = await newBuilding.save()
     return res.status(201).json(buildingSaved)
   } catch (error) {
-    return res.status(400).json('Bad Request error')
+    return res
+      .status(400)
+      .json({ message: 'Bad Request', error: error.message })
   }
 }
 //Read
@@ -18,7 +20,9 @@ const getBuildings = async (req, res, next) => {
     const allBuildings = await Building.find()
     return res.status(200).json(allBuildings)
   } catch (error) {
-    return res.status(400).json('Bad Request error')
+    return res
+      .status(400)
+      .json({ message: 'Bad Request', error: error.message })
   }
 }
 
@@ -31,7 +35,9 @@ const updateBuildings = async (req, res, next) => {
     const updatedBuilding = await Building.findByIdAndDelete(id, newBuilding)
     return res.status(200).json(updatedBuilding)
   } catch (error) {
-    return res.status(400).json('Bad Request error')
+    return res
+      .status(400)
+      .json({ message: 'Bad Request', error: error.message })
   }
 }
 
@@ -42,7 +48,9 @@ const deleteBuildings = async (req, res, next) => {
     const deletedBuilding = await Building.findByIdAndDelete(id)
     return res.status(200).json(deletedBuilding)
   } catch (error) {
-    return res.status(400).json('Bad Request error')
+    return res
+      .status(400)
+      .json({ message: 'Bad Request', error: error.message })
   }
 }
 
