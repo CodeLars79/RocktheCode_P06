@@ -1,7 +1,5 @@
 const Architect = require('../models/architect')
 
-// CRUD -> create read update delete
-
 //Create
 const postArchitects = async (req, res, next) => {
   try {
@@ -14,6 +12,7 @@ const postArchitects = async (req, res, next) => {
       .json({ message: 'Bad Request', error: error.message })
   }
 }
+
 //Read
 const getArchitects = async (req, res, next) => {
   try {
@@ -30,11 +29,9 @@ const getArchitects = async (req, res, next) => {
 const updateArchitects = async (req, res, next) => {
   try {
     const { id } = req.params
-    const oldArchitect = await Building.findById(id)
-    const newArchitect = newArchitect(req.body)
-    newArchitect._id = id
-    newArchitect.building = [...oldArchitect.building, ...req.body.building]
-    const updatedArchitect = await Architect.findByIdAndDelete(id, newArchitect)
+    const updatedArchitect = await Architect.findByIdAndUpdate(id, req.body, {
+      new: true
+    })
     return res.status(200).json(updatedArchitect)
   } catch (error) {
     return res

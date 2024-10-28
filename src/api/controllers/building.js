@@ -1,8 +1,6 @@
 const Building = require('../models/building')
 
-// CRUD -> create read update delete
-
-//Create
+// Create
 const postBuildings = async (req, res, next) => {
   try {
     const newBuilding = new Building(req.body)
@@ -14,7 +12,8 @@ const postBuildings = async (req, res, next) => {
       .json({ message: 'Bad Request', error: error.message })
   }
 }
-//Read
+
+// Read
 const getBuildings = async (req, res, next) => {
   try {
     const allBuildings = await Building.find()
@@ -26,13 +25,13 @@ const getBuildings = async (req, res, next) => {
   }
 }
 
-//Update
+// Update
 const updateBuildings = async (req, res, next) => {
   try {
     const { id } = req.params
-    const newBuilding = newBuilding(req.body)
-    newBuilding._id = id
-    const updatedBuilding = await Building.findByIdAndDelete(id, newBuilding)
+    const updatedBuilding = await Building.findByIdAndUpdate(id, req.body, {
+      new: true
+    })
     return res.status(200).json(updatedBuilding)
   } catch (error) {
     return res
@@ -41,7 +40,7 @@ const updateBuildings = async (req, res, next) => {
   }
 }
 
-//Delete
+// Delete
 const deleteBuildings = async (req, res, next) => {
   try {
     const { id } = req.params
