@@ -29,10 +29,25 @@ const getArchitects = async (req, res, next) => {
 const updateArchitects = async (req, res, next) => {
   try {
     const { id } = req.params
-    const updatedArchitect = await Architect.findByIdAndUpdate(id, req.body, {
-      new: true
-    })
-    return res.status(200).json(updatedArchitect)
+    const updateData = req.body
+    if (updateData.building) {
+      // Update using $addToSet to prevent duplicates
+      const updatedArchitect = await Architect.findByIdAndUpdate(
+        id,
+        { $addToSet: { building: { $each: updateData.building } } },
+        { new: true }
+      )
+      return res.status(200).json(updatedArchitect)
+    } else {
+      const updatedArchitect = await Architect.findByIdAndUpdate(
+        id,
+        updateData,
+        {
+          new: true
+        }
+      )
+      return res.status(200).json(updatedArchitect)
+    }
   } catch (error) {
     return res
       .status(400)
